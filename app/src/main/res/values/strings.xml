@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">StateManagementExtended</string>
+    <string name="zwieksz">Zwiększ</string>
+    <string name="licznik_0">Licznik: 0</string>
+    <string name="tekst">Tekst</string>
+    <string name="opcja_zaznaczona">Opcja zaznaczona</string>
+</resources>
