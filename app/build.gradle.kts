@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

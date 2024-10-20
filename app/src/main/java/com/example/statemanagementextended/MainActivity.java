@@ -10,13 +10,11 @@ import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String KEY_COUNT = "count";
-    private static final Boolean KEY_CHECKBOXVISIBILITY = false;
-    private static final Boolean KEY_SWITCHCOLOR = false;
-    private static final String KEY_EDITTEXT = "";
-
+    private StateViewModel stateViewModel;
+    public View view;
     private LinearLayout layout;
     private TextView textViewCount;
     private Button buttonIncrement;
@@ -24,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkbox_visible;
     private TextView text_visible;
     private Switch colorSwitch;
-
-    private int count = 0;
-    private Boolean checkbox_visibility;
-    private Boolean switch_color;
-    private String edit_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +36,21 @@ public class MainActivity extends AppCompatActivity {
         text_visible = findViewById(R.id.text_visible);
         layout = findViewById(R.id.layout);
 
-        if(savedInstanceState != null){
-            count = savedInstanceState.getInt("KEY_COUNT");
-            checkbox_visibility = savedInstanceState.getBoolean("KEY_CHECKBOXVISIBILITY");
-            changeVisibility(checkbox_visibility, null);
-            switch_color = savedInstanceState.getBoolean("KEY_SWITCHCOLOR");
-            changeBackgroundColor(switch_color);
-            edit_text = savedInstanceState.getString("KEY_EDITTEXT");
+        stateViewModel = new ViewModelProvider(this).get(StateViewModel.class);
+        updateCountText();
+        changeBackgroundColor();
+        changeVisibility(null);
+
+        if(editText.getText().toString().matches("")){
+            changeEditText();
+        } else {
+            stateViewModel.updateEditText(editText.getText().toString().trim());
         };
 
         buttonIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
+                stateViewModel.incrementCount();
                 updateCountText();
             };
         });
@@ -63,45 +58,40 @@ public class MainActivity extends AppCompatActivity {
         colorSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch_color = colorSwitch.isChecked();
-                changeBackgroundColor(switch_color);
+                stateViewModel.updateSwitchColor(colorSwitch.isChecked());
+                changeBackgroundColor();
             };
         });
 
         checkbox_visible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkbox_visibility = checkbox_visible.isChecked();
-                changeVisibility(checkbox_visibility, v);
+                stateViewModel.updateCheckboxVisibility(checkbox_visible.isChecked());
+                changeVisibility(v);
             };
         });
     };
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putInt("KEY_COUNT", count);
-        outState.putBoolean("KEY_CHECKBOXVISIBILITY", checkbox_visibility);
-        outState.putBoolean("KEY_SWITCHCOLOR", switch_color);
-        outState.putString("KEY_EDITTEXT", edit_text);};
-
     private void updateCountText(){
-        textViewCount.setText("Licznik: " + count);
+        textViewCount.setText("Licznik: " + stateViewModel.getCount());
     };
 
-    private void changeBackgroundColor(Boolean ifTrue){
-        if(ifTrue == false){
+    private void changeBackgroundColor(){
+        if(stateViewModel.getSwitch_color() == false){
             layout.setBackgroundColor(Color.WHITE);
         } else {
             layout.setBackgroundColor(Color.BLACK);
         };
     };
 
-    private void changeVisibility(Boolean ifTrue, View v){
-        if(ifTrue == false){
+    private void changeVisibility(View v){
+        if(stateViewModel.getCheckbox_visibility() == false){
             text_visible.setVisibility(v.INVISIBLE);
         } else {
             text_visible.setVisibility(v.VISIBLE);
         }
     };
+    private void changeEditText(){
+        editText.setText(stateViewModel.getEdit_text());
+    }
 }
