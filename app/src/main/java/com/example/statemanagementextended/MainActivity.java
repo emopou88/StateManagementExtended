@@ -14,13 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity {
     private StateViewModel stateViewModel;
-    public View view;
     private LinearLayout layout;
     private TextView textViewCount;
     private Button buttonIncrement;
     private EditText editText;
-    private CheckBox checkbox_visible;
-    private TextView text_visible;
+    private CheckBox checkboxVisible;
+    private TextView textVisible;
     private Switch colorSwitch;
 
     @Override
@@ -32,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         buttonIncrement = findViewById(R.id.buttonIncrement);
         editText = findViewById(R.id.editText);
         colorSwitch = findViewById(R.id.colorSwitch);
-        checkbox_visible = findViewById(R.id.checkbox_visible);
-        text_visible = findViewById(R.id.text_visible);
+        checkboxVisible = findViewById(R.id.checkboxVisible);
+        textVisible = findViewById(R.id.textVisible);
         layout = findViewById(R.id.layout);
 
         stateViewModel = new ViewModelProvider(this).get(StateViewModel.class);
@@ -63,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
             };
         });
 
-        checkbox_visible.setOnClickListener(new View.OnClickListener() {
+        checkboxVisible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stateViewModel.updateCheckboxVisibility(checkbox_visible.isChecked());
+                stateViewModel.updateCheckboxVisibility(checkboxVisible.isChecked());
                 changeVisibility(v);
             };
         });
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void changeBackgroundColor(){
-        if(stateViewModel.getSwitch_color() == false){
+        if(stateViewModel.getSwitchColor() == false){
             layout.setBackgroundColor(Color.WHITE);
         } else {
             layout.setBackgroundColor(Color.BLACK);
@@ -85,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void changeVisibility(View v){
-        if(stateViewModel.getCheckbox_visibility() == false){
-            text_visible.setVisibility(v.INVISIBLE);
+        if(stateViewModel.getCheckboxVisibility() == false){
+            textVisible.setVisibility(v.INVISIBLE);
         } else {
-            text_visible.setVisibility(v.VISIBLE);
+            textVisible.setVisibility(v.VISIBLE);
         }
     };
     private void changeEditText(){
-        editText.setText(stateViewModel.getEdit_text());
+        editText.setText(stateViewModel.getEditText());
     }
 }

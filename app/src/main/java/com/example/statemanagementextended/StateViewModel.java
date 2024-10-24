@@ -10,13 +10,13 @@ public class StateViewModel extends ViewModel{
     public int getCount(){
         return count;}
 
-    public Boolean getCheckbox_visibility(){
+    public Boolean getCheckboxVisibility(){
         return checkbox_visibility;}
 
-    public Boolean getSwitch_color(){
+    public Boolean getSwitchColor(){
         return switch_color;}
 
-    public String getEdit_text(){
+    public String getEditText(){
         return edit_text;}
 
     public void incrementCount(){
